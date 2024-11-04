@@ -3,6 +3,7 @@ import { authOptions } from '@/app/api/auth'
 import { Services } from '@/app/infrastructure/services/services.service'
 import { DefaultSession } from 'next-auth'
 import { getServerSession } from 'next-auth'
+import Header from '@/components/ui/organisms/header/Header'
 
 interface Session extends DefaultSession {
   user: {
@@ -25,6 +26,16 @@ export default async function ServicesPage() {
   const services = await useServices.getServices(token)
   console.log(services)
   return (
-    <div>ServicesPage</div>
+    <div>
+      <Header />
+      <h1>Servicios</h1>
+      {services.content.map((service) => (
+        <div key={service.id}>
+          <h2>{service.name}</h2>
+          <p>{service.description}</p>
+          <p>Precio: ${service.price}</p>
+        </div>
+      ))}
+    </div>
   )
 }
