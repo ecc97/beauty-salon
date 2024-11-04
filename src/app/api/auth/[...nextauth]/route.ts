@@ -1,4 +1,4 @@
-import { ILoginRequest } from "@/app/core/application/dto/auth";
+import { ILoginRequest } from "@/app/core/application/dto";
 import { AuthService } from "@/app/infrastructure/services/auth.service";
 import NextAuth, { NextAuthOptions, Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -25,7 +25,7 @@ interface CustomSession extends Session {
     };
 }
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -34,36 +34,37 @@ const authOptions: NextAuthOptions = {
                 password: { label: "Contraseña", type: "password" },
             },
             authorize: async (credentials) => {
-                if(!credentials?.password || !credentials.username){
-                    console.log('Credenciales faltantes')
-                    return null
+                if (!credentials?.password || !credentials?.username) {
+                    console.error("Credenciales inválidas");
+                    return null;
                 }
+
                 const loginRequest: ILoginRequest = {
                     userName: credentials.username,
                     password: credentials.password,
                 }
 
                 try {
-                    const authService = new AuthService()
-                    const response  = await authService.login(loginRequest)
+                    const authService = new AuthService();
+                    const response = await authService.login(loginRequest);
 
                     return {
                         email: loginRequest.userName,
                         id: loginRequest.userName,
                         name: loginRequest.userName,
-                        token: response.token
-                    } as AuthUser
-                    
+                        token: response.token,
+                    } as AuthUser;
                 } catch (error) {
                     console.log(error)
                     return Promise.reject(new Error(JSON.stringify(error)))
                 }
-            }
+            },
         }),
     ],
     session: {
         strategy: "jwt",
     },
+    secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
         async jwt({ token, user }) {
             if (user) {

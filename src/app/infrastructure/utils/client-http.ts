@@ -7,25 +7,29 @@ export class HttpClient{
     this.baseUrl = baseUrl || defaultBaseUrl;
   }
 
-  private async getHeader() {
-    //si esta autenticado
-    return {
+  private async getHeader(token?: string) {
+    const headers: HeadersInit = {
       "Content-Type": "application/json",
-      // "Autorization": "Bearer token"
     }
+    //si esta autenticado
+    if (token) {
+      headers.Authorization = `Bearer ${token}`
+    }
+    return headers
   }
 
   private async handleResponse(response: Response){
     if (!response.ok) {
       const errorData = await response.json();
+      console.log("Error en la peticion:", errorData)
       // throw new Error(errorData || "Ocurrio un error en la peticion")
       throw errorData
     }
     return await response.json();
   }
 
-  async get<T>(url: string): Promise<T> {
-    const headers = await this.getHeader();
+  async get<T>(url: string, token?: string): Promise<T> {
+    const headers = await this.getHeader(token);
     const response = await fetch(`${this.baseUrl}/${url}`,{
       headers: headers,
       method: "GET",
