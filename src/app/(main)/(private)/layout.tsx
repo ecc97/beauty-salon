@@ -1,8 +1,13 @@
 import React from 'react'
 import AuthGuard from './dashboard/guard/AuthGuard'
+import Layout from '@/components/ui/layout/Layout'
 
-export default function PrivateLayout({children}: {children: React.ReactNode}) {
+export default function PrivateLayout({ children }: { children: React.ReactNode }) {
   return (
-    <AuthGuard>{children}</AuthGuard>
+    <AuthGuard>
+      <Layout>
+        {children}
+      </Layout>
+    </AuthGuard>
   )
 }
