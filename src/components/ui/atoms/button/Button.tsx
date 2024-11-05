@@ -4,7 +4,7 @@ type BtnType = 'button' | 'submit' | 'reset'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     type: BtnType;
-    onClick: () => void;
+    onClick?: () => void;
     children: React.ReactNode;
     className?: string;
 }
