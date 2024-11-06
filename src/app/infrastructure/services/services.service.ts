@@ -8,9 +8,9 @@ export class Services {
         this.httpClient = new HttpClient()
     }
  
-    async getServices(token: string, page: number = 1, size: number = 5): Promise<IServiceResponse>{
+    async getServices(token: string, page: number, size: number): Promise<IServiceResponse>{
         try {
-            const response = this.httpClient.get<IServiceResponse>(`services?page=1&size=5`, token)
+            const response = this.httpClient.get<IServiceResponse>(`services?page=${page}&size=${size}`, token)
             return response;
         } catch (error) {
             console.log('Error obteniendo servicios:', error)

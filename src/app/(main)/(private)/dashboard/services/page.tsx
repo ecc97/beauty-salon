@@ -16,28 +16,28 @@ interface Session extends DefaultSession {
   }
 }
 
+interface IParamsProps {
+  searchParams: {
+    page?: string;
+    size?: string;
+    name?: string
+  }
+}
+
 const useServices = new Services()
 
-export default async function ServicesPage() {
+export default async function ServicesPage({ searchParams }: IParamsProps) {
   const session = await getServerSession(authOptions) as Session;
   if (!session) {
     return <div>Loading...</div>
   }
   const token = session.user.token as string
-  const services = await useServices.getServices(token)
+  const page = searchParams.page ? parseInt(searchParams.page) : 1;
+  const size = searchParams.size ? parseInt(searchParams.size) : 9;
+  const name = searchParams.name || "";
+  const services = await useServices.getServices(token, page, size)
   console.log(services)
   return (
-    <ServiceTemplate dataService={services} token={token}/>
-    // <div>
-    //   <Header />
-    //   <h1>Servicios</h1>
-    //   {services.content.map((service) => (
-    //     <div key={service.id}>
-    //       <h2>{service.name}</h2>
-    //       <p>{service.description}</p>
-    //       <p>Precio: ${service.price}</p>
-    //     </div>
-    //   ))}
-    // </div>
+    <ServiceTemplate dataService={services} token={token} />
   )
 }

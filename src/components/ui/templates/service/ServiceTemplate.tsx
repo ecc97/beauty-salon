@@ -4,13 +4,14 @@ import Button from '../../atoms/button/Button'
 import Modal from '../../organisms/modal/Modal'
 import ModalForm from '../../organisms/modalForm/ModalForm'
 import ServiceCard from '../../molecules/common/card/Card'
+import Pagination from '../../molecules/pagination/Pagination'
 
 interface ServiceTemplateProps {
     dataService: IServiceResponse
     token: string
 }
 
-function ServiceTemplate({dataService, token} : ServiceTemplateProps) {
+function ServiceTemplate({ dataService, token }: ServiceTemplateProps) {
     const services = dataService.content
     const [showModal, setShowModal] = React.useState(false)
     const handleShowModal = () => setShowModal(true)
@@ -23,13 +24,15 @@ function ServiceTemplate({dataService, token} : ServiceTemplateProps) {
                     Agregar Servicio
                 </Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {services.map((service) => (
-                    <ServiceCard key={service.id} service={service} />
-                ))}
+            <div className='flex-grow'>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {services.map((service) => (
+                        <ServiceCard key={service.id} service={service} />
+                    ))}
+                </div>
             </div>
-            <ModalForm isOpen={showModal} onClose={handleCloseModal} title='Agregar Servicio' token={token}/>
-
+            <ModalForm isOpen={showModal} onClose={handleCloseModal} title='Agregar Servicio' token={token} />
+            <Pagination dataService={dataService}/>
         </>
     )
 }
