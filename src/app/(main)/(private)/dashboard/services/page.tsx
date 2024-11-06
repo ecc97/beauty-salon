@@ -27,7 +27,7 @@ export default async function ServicesPage() {
   const services = await useServices.getServices(token)
   console.log(services)
   return (
-    <ServiceTemplate dataService={services}/>
+    <ServiceTemplate dataService={services} token={token}/>
     // <div>
     //   <Header />
     //   <h1>Servicios</h1>

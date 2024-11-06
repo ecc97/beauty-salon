@@ -26,7 +26,7 @@ export const FormField = <T extends FieldValues>({label, type, name, control, er
                     id={id || label.toLowerCase()}
                     type={type}
                     error={error?.message}
-                    placeholder={placeholder || `Ingrese su {label.toLowerCase()}`}
+                    placeholder={placeholder || `Ingrese su ${label.toLowerCase()}`}
                     {...field}
                 />
             )}
