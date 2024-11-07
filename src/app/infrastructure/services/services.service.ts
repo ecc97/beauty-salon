@@ -27,4 +27,14 @@ export class Services {
             throw error
         }
     }
+    
+    async updateService(req: IServiceRequest, token: string, id: number): Promise<IServices> {
+        try {
+            const response = this.httpClient.put<IServices, IServiceRequest>(`services/${id}`, req, token)
+            return response;
+        } catch (error) {
+            console.log('Error actualizando servicio:', error)
+            throw error
+        }
+    }
 }
