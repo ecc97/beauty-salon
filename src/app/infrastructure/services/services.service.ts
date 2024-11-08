@@ -1,7 +1,8 @@
 import { IServiceRequest } from "@/app/core/application/dto";
+import { PService } from "@/app/core/application/ports";
 import { HttpClient } from "../utils";
 
-export class Services {
+export class Services implements PService {
     private httpClient: HttpClient
 
     constructor() {
@@ -18,7 +19,7 @@ export class Services {
         }
     }
 
-    async addSevice(req: IServiceRequest, token: string): Promise<IServices> {
+    async addService(req: IServiceRequest, token: string): Promise<IServices> {
         try {
             const response = this.httpClient.post<IServices, IServiceRequest>(`services`, req, token)
             return response;

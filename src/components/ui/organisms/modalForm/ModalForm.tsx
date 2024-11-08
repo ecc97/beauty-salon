@@ -41,7 +41,7 @@ function ModalForm({ isOpen, onClose, title, token, service}: IModalProps) {
                 const response = await useServicesService.updateService(data, token, service.id!)
                 console.log('Servicio actualizado con éxito', response)
             } else {
-                const response = await useServicesService.addSevice(data, token);
+                const response = await useServicesService.addService(data, token);
                 console.log('Servicio agregado con éxito:', response);
             }
             onClose();
