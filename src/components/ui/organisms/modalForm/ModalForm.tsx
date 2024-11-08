@@ -8,6 +8,7 @@ import { FormField } from '../../molecules';
 import Modal from '../modal/Modal';
 import Button from '../../atoms/button/Button';
 import { Services } from '@/app/infrastructure/services/services.service';
+import { useServicesService } from '@/app/infrastructure/helpers/hooks/useServices';
 import { useRouter } from 'next/navigation';
 
 interface IModalProps {
@@ -18,7 +19,6 @@ interface IModalProps {
     service?: IServiceRequest
 }
 
-const useServicesService = new Services();
 
 const serviceSchema = yup.object()
     .shape({
