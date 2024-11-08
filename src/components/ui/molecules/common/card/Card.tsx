@@ -3,14 +3,28 @@ import { useState } from 'react'
 import Button from '@/components/ui/atoms/button/Button'
 import { MdEdit } from 'react-icons/md'
 import { TbTrashXFilled } from 'react-icons/tb'
-import { IServiceRequest } from '@/app/core/application/dto'
+import { useServicesService } from '@/app/infrastructure/helpers/hooks/useServices'
+import { useRouter } from 'next/navigation'
 
 interface ServiceProps {
   service: IServices
+  token: string  
   onEdit: () => void
 }
 
-export default function ServiceCard({ service, onEdit }: ServiceProps) {
+export default function ServiceCard({ service, token, onEdit }: ServiceProps) {
+  const router = useRouter()
+  const handleDelete = async (id: string) => {
+    const confirmed = confirm('¿Estás seguro de que quieres eliminar este elemento?')
+    if (!confirmed) return
+    try {
+      await useServicesService.deleteService(token, Number(id))
+      console.log('Servicio eliminado con éxito')
+    } catch (error) {
+      console.error('Error al eliminar el servicio:', error)
+    }
+    router.refresh()
+  }
 
   return (
     <article className="w-full bg-gray-50 rounded-lg shadow-xl">
@@ -24,7 +38,7 @@ export default function ServiceCard({ service, onEdit }: ServiceProps) {
             <Button type="button" className='bg-blue-500 text-white p-2 rounded hover:bg-gray-50 hover:text-blue-500 hover:border hover:border-blue-500' onClick={onEdit}>
                <MdEdit />
             </Button>
-            <Button type="button" className='bg-red-500 text-white p-2 rounded hover:bg-gray-50 hover:text-red-500 hover:border hover:border-red-500'>
+            <Button type="button" className='bg-red-500 text-white p-2 rounded hover:bg-gray-50 hover:text-red-500 hover:border hover:border-red-500' onClick={() => handleDelete(String(service.id))}>
                 <TbTrashXFilled />  
             </Button>
           </>

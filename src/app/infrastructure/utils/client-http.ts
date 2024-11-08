@@ -25,6 +25,7 @@ export class HttpClient{
       // throw new Error(errorData || "Ocurrio un error en la peticion")
       throw errorData
     }
+    if (response.status === 204) return null;
     return await response.json();
   }
 
@@ -38,8 +39,8 @@ export class HttpClient{
     return this.handleResponse(response)
   }
 
-  async delete<T>(url: string): Promise<T>{
-    const headers = await this.getHeader();
+  async delete<T>(url: string, token?: string): Promise<T>{
+    const headers = await this.getHeader(token);
     const response = await fetch(`${this.baseUrl}/${url}`,{
       headers: headers,
       method: "DELETE",

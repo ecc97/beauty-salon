@@ -37,4 +37,14 @@ export class Services {
             throw error
         }
     }
+
+    async deleteService(token: string, id: number): Promise<void> {
+        try {
+            const response = await this.httpClient.delete<void>(`services/${String(id)}`, token);
+            return response
+        } catch (error) {
+            console.log('Error eliminando servicio:', error)
+            throw error
+        }
+    }
 }
