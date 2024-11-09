@@ -9,7 +9,7 @@ export interface PService {
      * @param size
      * @returns {Promise<IServiceResponse>}Service response
      */
-    getServices(token: string, page: number, size: number): Promise<IServiceResponse>;
+    getServices(page?: number, size?: number): Promise<IServiceResponse>;
 
     /**
      * Add a new service
@@ -17,7 +17,7 @@ export interface PService {
      * @param {IServiceRequest} - Service request 
      * @returns {Promise<IServices>} Service response
      */
-    addService(req: IServiceRequest, token: string): Promise<IServices>;    
+    addService(req: IServiceRequest): Promise<IServices>;    
 
     /**
      * Update a service
@@ -26,7 +26,7 @@ export interface PService {
      * @param {IServiceRequest} - Service request
      * @returns {Promise<IServices>}
      */
-    updateService(req: IServiceRequest, token: string, id: number): Promise<IServices>;
+    updateService(req: IServiceRequest, id: number): Promise<IServices>;
 
     /**
      * Delete a service
@@ -34,5 +34,5 @@ export interface PService {
      * @param id - Service identifier
      * @returns {Promise<void>}
      */
-    deleteService(token: string, id: number): Promise<void>;
+    deleteService(id: number): Promise<void>;
 }
