@@ -9,10 +9,9 @@ import { IServiceRequest } from '@/app/core/application/dto'
 
 interface ServiceTemplateProps {
     dataService: IServiceResponse
-    token: string
 }
 
-function ServiceTemplate({ dataService, token }: ServiceTemplateProps) {
+function ServiceTemplate({ dataService }: ServiceTemplateProps) {
     const services = dataService.content
     const [showModal, setShowModal] = React.useState(false)
     const [selectedService, setSelectedService] = React.useState<IServiceRequest | null>(null);
@@ -36,11 +35,11 @@ function ServiceTemplate({ dataService, token }: ServiceTemplateProps) {
             <div className='flex-grow'>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {services.map((service) => (
-                        <ServiceCard key={service.id} service={service} token={token} onEdit={() => handleShowModal(service)}/>
+                        <ServiceCard key={service.id} service={service} onEdit={() => handleShowModal(service)}/>
                     ))}
                 </div>
             </div>
-            <ModalForm isOpen={showModal} onClose={handleCloseModal} title={selectedService ? 'Editar Servicio' : 'Agregar Servicio'} token={token} service={selectedService!} />
+            <ModalForm isOpen={showModal} onClose={handleCloseModal} title={selectedService ? 'Editar Servicio' : 'Agregar Servicio'} service={selectedService!} />
             <Pagination dataService={dataService}/>
         </>
     )

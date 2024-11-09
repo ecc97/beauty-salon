@@ -8,17 +8,21 @@ import { useRouter } from 'next/navigation'
 
 interface ServiceProps {
   service: IServices
-  token: string  
   onEdit: () => void
 }
 
-export default function ServiceCard({ service, token, onEdit }: ServiceProps) {
+export default function ServiceCard({ service, onEdit }: ServiceProps) {
   const router = useRouter()
   const handleDelete = async (id: string) => {
     const confirmed = confirm('¿Estás seguro de que quieres eliminar este elemento?')
     if (!confirmed) return
     try {
-      await useServicesService.deleteService(token, Number(id))
+      await fetch(`/api/services/${Number(id)}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
       console.log('Servicio eliminado con éxito')
     } catch (error) {
       console.error('Error al eliminar el servicio:', error)

@@ -14,8 +14,7 @@ import { useRouter } from 'next/navigation';
 interface IModalProps {
     isOpen: boolean;
     onClose: () => void;
-    title?: string;
-    token: string; 
+    title?: string; 
     service?: IServiceRequest
 }
 
@@ -27,7 +26,7 @@ const serviceSchema = yup.object()
         price: yup.number().positive("El precio debe ser positivo").required("Precio es requerido")
     })
 
-function ModalForm({ isOpen, onClose, title, token, service}: IModalProps) {
+function ModalForm({ isOpen, onClose, title, service}: IModalProps) {
     const { control, handleSubmit, formState: { errors }, reset } = useForm<IServiceRequest>({
         mode: 'onChange',
         reValidateMode: 'onChange',
@@ -38,10 +37,28 @@ function ModalForm({ isOpen, onClose, title, token, service}: IModalProps) {
     const handleServiceSubmit = async (data: IServiceRequest) => {
         try {
             if(service) {
-                const response = await useServicesService.updateService(data, token, service.id!)
+                const response = await fetch(`/api/services/${service.id}`, {
+                    method: "PUT",
+                    headers: { 
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                if(!response.ok) {
+                    throw new Error('Error actualizando servicio')
+                }
                 console.log('Servicio actualizado con éxito', response)
             } else {
-                const response = await useServicesService.addService(data, token);
+                const response = await fetch("/api/services", {
+                    method: "POST",
+                    headers: { 
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                if(!response.ok) {
+                    throw new Error('Error agregando servicio')
+                }
                 console.log('Servicio agregado con éxito:', response);
             }
             onClose();
