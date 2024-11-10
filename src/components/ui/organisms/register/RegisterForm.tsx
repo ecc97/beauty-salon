@@ -7,18 +7,12 @@ import { FormSelectField } from '../../molecules/common/FormSelectField'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
+import { useRouter } from "next/navigation"
 
 const registerSchema = yup.object().shape({
-    userName: yup.string().min(1, 'El nombre de usuario debe tener al menos un carácter').required('El nombre de usuario es requerido'),
+    userName: yup.string().min(8, 'El nombre de usuario debe tener al menos un 8 caracteres').required('El nombre de usuario es requerido'),
     password: yup.string().min(8, 'La contraseña debe tener al menos 8 caracteres').required('La contraseña es requerida'),
     // confirmPassword: yup.string().oneOf([yup.ref('password')], 'Las contraseñas no coinciden').required('Confirmar contraseña es requerida'),
-    firstName: yup.string().min(1, 'El nombre de debe tener al menos un carácter').required('Nombre requerido'),
-    lastName: yup.string().min(1, 'El apellido debe tener al menos un carácter').required('Apellido requerido'),
-    email: yup.string().email('El correo es inválido').required('El correo es requerido'),
-    phone: yup.string().required('Número de teléfono requerido'),
-    role: yup.string().required('Rol requerido')
-    // phoneNumber: yup.string().min(10, 'El número de teléfono debe tener 10 dígitos').required('Número de teléfono requerido'),
-    // termsAndConditions: yup.bool().required('Debe aceptar los términos y condiciones'),
 })
 
 export const RegisterForm = () => {
@@ -27,24 +21,52 @@ export const RegisterForm = () => {
         reValidateMode: 'onChange',
         resolver: yupResolver(registerSchema),
     })
+    
+    const router = useRouter()
+
     const handleRegister = async (data: IRegisterRequest) => {
         console.log(data)
-        // try {
-        //     const result = await signUp('email', {
-        //         email: data.email,
-        //         password: data.password,
-        //         username: data.userName,
-        //         firstName: data.firstName,
-        //         lastName: data.lastName,
-        //         phoneNumber: data.phoneNumber,
-        //         // additionalData: {
-        //         //     termsAndConditions: data.termsAndConditions,
-        //         // },
-        //     })
-        // } catch (error) {
-        //     setError('registerError', {
+        // Implement your registration logic here
+        
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            if (response.ok) {
+                router.push('/login')
+            } else {
+                const errorData = await response.json()
+                console.error(errorData)
+                throw new Error(errorData.message || "Error al registrar la cuenta");
+                // setError('userName', {
+                //     type:'manual',
+                //     message: errorData.message,
+                // })
+            }
+        } catch (error) {
+            console.error(error)
+        }
+
+        // Example:
+        // const response = await fetch('/api/register', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(data),
+        // })
+        // if (response.ok) {
+        //     // Registration successful, redirect to login page
+        //     router.push('/login')
+        // } else {
+        //     const errorData = await response.json()
+        //     setError('register', {
         //         type: 'manual',
-        //         message: error.message,
+        //         message: errorData.message,
         //     })
         // }
     }
@@ -75,49 +97,6 @@ export const RegisterForm = () => {
             error={errors.confirmPassword}
             placeholder="Confirma tu contraseña"
         /> */}
-        <FormField<IRegisterRequest>
-            control={control}
-            type="text"
-            label="Nombre"
-            name="firstName"
-            error={errors.firstName}
-            placeholder="Ingresa tu nombre"
-        />
-        <FormField<IRegisterRequest>
-            control={control}
-            type="text"
-            label="Apellido"
-            name="lastName"
-            error={errors.lastName}
-            placeholder="Ingresa tu apellido"
-        />
-        <FormField<IRegisterRequest>
-            control={control}
-            type="email"
-            label="Correo Electrónico"
-            name="email"
-            error={errors.email}
-            placeholder="Ingresa tu correo"
-        />
-        <FormField<IRegisterRequest>
-            control={control}
-            type="text"
-            label="Número de Teléfono"
-            name="phone"
-            error={errors.phone}
-            placeholder="Ingresa tu número de teléfono"
-        />
-        <FormSelectField
-            control={control}
-            label="Rol"
-            name="role"
-            options={[
-                { value: 'admin', label: 'Administrador' },
-                { value: 'user', label: 'Usuario' },
-            ]}
-            error={errors.role}
-            placeholder="Seleccione su rol"
-        />
         <Button type="submit" className="w-full py-2 px-4 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-500">
             Registrarme
         </Button>
