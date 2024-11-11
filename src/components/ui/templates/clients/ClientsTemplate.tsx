@@ -3,8 +3,6 @@ import React from 'react'
 import Button from '../../atoms/button/Button'
 import ClientCard from '../../molecules/common/card/ClientCard'
 import ModalClientForm from '../../organisms/modalFormClient/ModalFormClient'
-
-
 import Pagination from '../../molecules/pagination/Pagination'
 import { IClientRequest, IClientsResponse } from '@/app/core/application/dto/clients'
 
@@ -41,7 +39,7 @@ function ClientTemplate({ dataClient }: ClientTemplateProps) {
                 </div>
             </div>
             <ModalClientForm isOpen={showModal} onClose={handleCloseModal} title={selectedClient ? 'Editar Cliente' : 'Agregar Cliente'} client={selectedClient!} />
-            
+            <Pagination data={dataClient}/>
         </>
     )
 }

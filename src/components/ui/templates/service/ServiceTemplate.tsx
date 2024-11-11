@@ -15,7 +15,7 @@ function ServiceTemplate({ dataService }: ServiceTemplateProps) {
     const services = dataService.content
     const [showModal, setShowModal] = React.useState(false)
     const [selectedService, setSelectedService] = React.useState<IServiceRequest | null>(null);
-
+    
     const handleShowModal = (service?: IServiceRequest) => {
         setSelectedService(service || null)
         setShowModal(true)
@@ -40,7 +40,7 @@ function ServiceTemplate({ dataService }: ServiceTemplateProps) {
                 </div>
             </div>
             <ModalForm isOpen={showModal} onClose={handleCloseModal} title={selectedService ? 'Editar Servicio' : 'Agregar Servicio'} service={selectedService!} />
-            <Pagination dataService={dataService}/>
+            <Pagination data={dataService} />
         </>
     )
 }
