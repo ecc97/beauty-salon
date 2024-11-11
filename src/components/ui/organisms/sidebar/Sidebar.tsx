@@ -1,6 +1,7 @@
 "use client"
 import React from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import Button from '../../atoms/button/Button'
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoLogOut } from 'react-icons/io5'
@@ -11,30 +12,31 @@ function Sidebar() {
     const handleSignOut = () => {
         signOut()
     }
+    const pathname = usePathname()
     return (
         <aside className="flex flex-col h-full">
             <nav className="flex-1">
                 <ul className="space-y-2">
                     <li>
-                        <Link href="/customers" className="flex items-center p-2 rounded hover:bg-gray-700">
+                        <Link href="/dashboard/clients" className={`flex items-center p-2 rounded hover:bg-gray-700 ${pathname.includes('/dashboard/clients')? 'border-b-2 border-gray-500' : ''}`}>
 
                             Clientes
                         </Link>
                     </li>
                     <li>
-                        <Link href="/services" className="flex items-center p-2 rounded hover:bg-gray-700">
+                        <Link href="/dashboard/services" className={`flex items-center p-2 rounded hover:bg-gray-700 ${pathname.includes('/dashboard/services')? 'border-b-2 border-gray-500' : ''}`}>
 
                             Servicios
                         </Link>
                     </li>
                     <li>
-                        <Link href="/employees" className="flex items-center p-2 rounded hover:bg-gray-700">
+                        <Link href="/dashboard/employees" className={`flex items-center p-2 rounded hover:bg-gray-700 ${pathname.includes('/dashboard/employees')? 'border-b-2 border-gray-500' : ''}`}>
 
                             Empleados
                         </Link>
                     </li>
                     <li>
-                        <Link href="/appointments" className="flex items-center p-2 rounded hover:bg-gray-700">
+                        <Link href="/dashboard/appointments" className={`flex items-center p-2 rounded hover:bg-gray-700 ${pathname.includes('/dashboard/appointments')? 'border-b-2 border-gray-500' : ''}`}>
 
                             Citas
                         </Link>
