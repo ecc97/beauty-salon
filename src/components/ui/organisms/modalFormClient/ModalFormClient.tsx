@@ -36,11 +36,29 @@ function ModalClientForm({ isOpen, onClose, title, client}: IModalClientProps) {
     const handleClientSubmit = async (data: IClientRequest) => {
         try {
             if(client) {
-                // Update client
-                // Implement your update client logic here
+                const response = await fetch(`/api/clients/${client.id}`, {
+                    method: "PUT",
+                    headers: { 
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                if(!response.ok) {
+                    throw new Error('Error actualizando cliente')
+                }
+                console.log('Cliente actualizado con éxito:', response);
             } else {
-                // Create client
-                // Implement your create client logic here
+                const response = await fetch("/api/clients", {
+                    method: "POST",
+                    headers: { 
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                if(!response.ok) {
+                    throw new Error('Error agregando cliente')
+                }
+                console.log('Cliente agregado con éxito:', response);
             }
             onClose();
             reset();
